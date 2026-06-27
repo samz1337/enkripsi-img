@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>🔐 SecureImage - Enkripsi & Sensor Gambar</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -17,12 +17,12 @@
         body {
             background: linear-gradient(135deg, #0c0e1a 0%, #1a1f36 50%, #0c0e1a 100%);
             min-height: 100vh;
-            padding: 2rem 1rem;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            padding: 1rem 0.75rem;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, system-ui, sans-serif;
             position: relative;
         }
 
-        /* Background animated particles */
+        /* Background effect */
         body::before {
             content: '';
             position: fixed;
@@ -31,11 +31,11 @@
             right: 0;
             bottom: 0;
             background: 
-                radial-gradient(2px 2px at 20% 30%, rgba(99, 102, 241, 0.3), transparent),
-                radial-gradient(2px 2px at 40% 70%, rgba(139, 92, 246, 0.2), transparent),
-                radial-gradient(2px 2px at 60% 20%, rgba(99, 102, 241, 0.3), transparent),
-                radial-gradient(2px 2px at 80% 80%, rgba(139, 92, 246, 0.2), transparent);
-            background-size: 200px 200px;
+                radial-gradient(2px 2px at 20% 30%, rgba(99, 102, 241, 0.2), transparent),
+                radial-gradient(2px 2px at 40% 70%, rgba(139, 92, 246, 0.15), transparent),
+                radial-gradient(2px 2px at 60% 20%, rgba(99, 102, 241, 0.2), transparent),
+                radial-gradient(2px 2px at 80% 80%, rgba(139, 92, 246, 0.15), transparent);
+            background-size: 150px 150px;
             pointer-events: none;
             z-index: 0;
         }
@@ -43,178 +43,245 @@
         .container {
             position: relative;
             z-index: 1;
+            max-width: 100%;
+            padding: 0 0.5rem;
         }
 
-        /* Glassmorphism Card */
+        /* ===== CARDS ===== */
         .card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 32px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 24px;
+            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.6);
             color: #f1f5f9;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+            overflow: hidden;
         }
 
         .card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            transform: translateY(-1px);
+            box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.7);
         }
 
         .card-header {
-            background: rgba(255, 255, 255, 0.03);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
             font-weight: 700;
-            padding: 1.5rem 2rem;
-            font-size: 1.3rem;
-            letter-spacing: 0.5px;
-            border-radius: 32px 32px 0 0 !important;
+            padding: 0.9rem 1.2rem;
+            font-size: 1rem;
+            border-radius: 24px 24px 0 0 !important;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
         .card-header .icon-wrapper {
-            width: 40px;
-            height: 40px;
-            border-radius: 12px;
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2));
+            flex-shrink: 0;
+        }
+
+        .card-header .icon-wrapper i {
+            font-size: 0.9rem;
         }
 
         .card-body {
-            padding: 2rem;
+            padding: 1.2rem;
         }
 
-        /* Form Controls */
+        /* ===== HEADER ===== */
+        .app-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .app-header .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 0.4rem 1.2rem;
+            border-radius: 60px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .app-header .brand i {
+            font-size: 1.6rem;
+            color: #818cf8;
+        }
+
+        .app-header .brand h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            margin: 0;
+            letter-spacing: -0.5px;
+        }
+
+        .app-header .brand .badge-version {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            padding: 0.2rem 0.8rem;
+            border-radius: 40px;
+            font-size: 0.6rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .app-header .subtitle {
+            color: #64748b;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+            letter-spacing: 0.3px;
+        }
+
+        /* ===== FORM ===== */
         .form-control {
             background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             color: #f8fafc;
-            border-radius: 16px;
-            padding: 0.8rem 1.2rem;
+            border-radius: 14px;
+            padding: 0.65rem 1rem;
+            font-size: 0.9rem;
             transition: all 0.3s ease;
-            font-size: 0.95rem;
         }
 
         .form-control:focus {
             background: rgba(0, 0, 0, 0.6);
             border-color: #818cf8;
-            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
             color: #fff;
         }
 
         .form-control::placeholder {
-            color: #64748b;
-            opacity: 0.7;
+            color: #475569;
+            font-size: 0.85rem;
         }
 
         .form-label {
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             letter-spacing: 0.3px;
-            color: #cbd5e1;
-            margin-bottom: 0.5rem;
+            color: #94a3b8;
+            margin-bottom: 0.4rem;
         }
 
-        /* Buttons */
+        .form-label i {
+            margin-right: 6px;
+        }
+
+        /* ===== BUTTONS ===== */
         .btn {
             border-radius: 40px;
-            padding: 0.7rem 2rem;
+            padding: 0.55rem 1.2rem;
             font-weight: 600;
+            font-size: 0.9rem;
             transition: all 0.3s ease;
-            letter-spacing: 0.3px;
-            position: relative;
-            overflow: hidden;
+            letter-spacing: 0.2px;
+            white-space: nowrap;
         }
 
         .btn-primary {
             background: linear-gradient(135deg, #6366f1, #8b5cf6);
             border: none;
-            box-shadow: 0 8px 24px -6px rgba(99, 102, 241, 0.4);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px) scale(1.02);
-            box-shadow: 0 12px 32px -6px rgba(99, 102, 241, 0.6);
+            box-shadow: 0 6px 20px -6px rgba(99, 102, 241, 0.35);
         }
 
         .btn-primary:active {
-            transform: scale(0.98);
+            transform: scale(0.97);
         }
 
         .btn-success {
             background: linear-gradient(135deg, #10b981, #059669);
             border: none;
-            box-shadow: 0 8px 24px -6px rgba(16, 185, 129, 0.4);
+            box-shadow: 0 6px 20px -6px rgba(16, 185, 129, 0.35);
         }
 
-        .btn-success:hover {
-            transform: translateY(-2px) scale(1.02);
-            box-shadow: 0 12px 32px -6px rgba(16, 185, 129, 0.6);
+        .btn-success:active {
+            transform: scale(0.97);
         }
 
         .btn-outline-light {
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: #e2e8f0;
-            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #cbd5e1;
+            background: rgba(255, 255, 255, 0.02);
+            font-size: 0.8rem;
+            padding: 0.45rem 1rem;
         }
 
-        .btn-outline-light:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
+        .btn-outline-light:active {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .btn-sm {
+            padding: 0.35rem 0.8rem;
+            font-size: 0.75rem;
         }
 
         .btn:disabled {
-            opacity: 0.6;
+            opacity: 0.5;
             cursor: not-allowed;
             transform: none !important;
         }
 
-        /* Image Preview */
+        /* ===== IMAGE PREVIEW ===== */
         .image-preview {
-            background: rgba(0, 0, 0, 0.4);
-            border-radius: 20px;
-            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.35);
+            border-radius: 16px;
+            padding: 0.8rem;
             text-align: center;
-            border: 2px dashed rgba(255, 255, 255, 0.06);
-            min-height: 160px;
+            border: 2px dashed rgba(255, 255, 255, 0.04);
+            min-height: 100px;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-direction: column;
             transition: all 0.3s ease;
-            position: relative;
+            margin-top: 0.5rem;
         }
 
         .image-preview.has-image {
-            border-color: rgba(99, 102, 241, 0.3);
-            background: rgba(99, 102, 241, 0.05);
+            border-color: rgba(99, 102, 241, 0.2);
+            background: rgba(99, 102, 241, 0.04);
         }
 
         .image-preview img {
             max-width: 100%;
-            max-height: 250px;
-            border-radius: 12px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-            transition: all 0.3s ease;
+            max-height: 180px;
+            border-radius: 10px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
         }
 
         .image-preview .placeholder-icon {
-            font-size: 3rem;
-            color: #475569;
+            font-size: 2.2rem;
+            color: #334155;
             opacity: 0.5;
-            margin-bottom: 8px;
         }
 
-        /* Sensor Effect - Blur & Pixelate */
+        .image-preview .placeholder-text {
+            color: #475569;
+            font-size: 0.75rem;
+        }
+
+        /* ===== SENSOR OVERLAY ===== */
         .sensor-overlay {
             position: relative;
             display: inline-block;
+            width: 100%;
         }
 
         .sensor-overlay::before {
@@ -223,47 +290,53 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 3rem;
+            font-size: 2.5rem;
             z-index: 2;
             text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
             animation: pulse 2s ease-in-out infinite;
         }
 
         .sensor-overlay img {
-            filter: blur(12px) brightness(0.7);
-            transition: all 0.5s ease;
+            filter: blur(10px) brightness(0.7);
+            transition: all 0.4s ease;
+            max-height: 180px;
+            width: auto;
         }
 
-        .sensor-overlay:hover img {
-            filter: blur(8px) brightness(0.8);
+        .sensor-overlay.no-sensor::before {
+            content: none !important;
+        }
+
+        .sensor-overlay.no-sensor img {
+            filter: none !important;
         }
 
         @keyframes pulse {
             0%, 100% { transform: translate(-50%, -50%) scale(1); }
-            50% { transform: translate(-50%, -50%) scale(1.1); }
+            50% { transform: translate(-50%, -50%) scale(1.08); }
         }
 
-        /* Result Box */
+        /* ===== RESULT BOX ===== */
         .result-box {
-            background: rgba(0, 0, 0, 0.4);
-            border-radius: 16px;
-            padding: 1.2rem 1.5rem;
+            background: rgba(0, 0, 0, 0.35);
+            border-radius: 14px;
+            padding: 0.8rem 1rem;
             word-break: break-all;
-            font-size: 0.8rem;
-            border-left: 4px solid #818cf8;
-            max-height: 150px;
+            font-size: 0.7rem;
+            border-left: 3px solid #818cf8;
+            max-height: 110px;
             overflow-y: auto;
             font-family: 'Courier New', monospace;
             color: #a5b4fc;
+            line-height: 1.5;
         }
 
         .result-box::-webkit-scrollbar {
-            width: 4px;
+            width: 3px;
         }
 
         .result-box::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.03);
         }
 
         .result-box::-webkit-scrollbar-thumb {
@@ -271,216 +344,196 @@
             border-radius: 10px;
         }
 
-        /* Badge */
+        /* ===== BADGE ===== */
         .badge-db {
-            background: rgba(45, 55, 72, 0.8);
-            color: #cbd5e1;
-            padding: 0.4rem 1rem;
+            background: rgba(45, 55, 72, 0.7);
+            color: #94a3b8;
+            padding: 0.25rem 0.7rem;
             border-radius: 40px;
             font-weight: 400;
-            font-size: 0.75rem;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.65rem;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            white-space: nowrap;
         }
 
-        /* Table */
-        .table {
-            color: #e2e8f0;
-            font-size: 0.85rem;
-            margin-bottom: 0;
-        }
-
-        .table th {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        .badge-status {
+            padding: 0.2rem 0.6rem;
+            border-radius: 40px;
+            font-size: 0.6rem;
             font-weight: 600;
-            color: #94a3b8;
-            text-transform: uppercase;
-            font-size: 0.7rem;
-            letter-spacing: 0.5px;
-            padding: 0.8rem 0.5rem;
         }
 
-        .table td {
-            border-color: rgba(255, 255, 255, 0.04);
-            vertical-align: middle;
-            padding: 0.8rem 0.5rem;
-        }
-
-        .table tr {
-            transition: background 0.2s ease;
-        }
-
-        .table tr:hover {
-            background: rgba(255, 255, 255, 0.03);
-        }
-
-        .btn-sm-icon {
-            background: rgba(255, 255, 255, 0.05);
-            border: none;
-            color: #a5b4fc;
-            padding: 0.3rem 0.6rem;
-            border-radius: 8px;
-            transition: all 0.2s ease;
-            margin: 0 2px;
-        }
-
-        .btn-sm-icon:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: #e0e7ff;
-            transform: scale(1.1);
-        }
-
-        .btn-sm-icon.danger:hover {
+        .badge-status.active {
             background: rgba(239, 68, 68, 0.2);
             color: #f87171;
         }
 
-        /* Toast */
+        .badge-status.inactive {
+            background: rgba(16, 185, 129, 0.2);
+            color: #34d399;
+        }
+
+        /* ===== TABLE ===== */
+        .table-wrapper {
+            max-height: 240px;
+            overflow-y: auto;
+            border-radius: 12px;
+        }
+
+        .table-wrapper::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        .table-wrapper::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .table-wrapper::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 10px;
+        }
+
+        .table {
+            color: #e2e8f0;
+            font-size: 0.75rem;
+            margin-bottom: 0;
+            min-width: 400px;
+        }
+
+        .table th {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
+            font-size: 0.6rem;
+            letter-spacing: 0.5px;
+            padding: 0.5rem 0.4rem;
+            position: sticky;
+            top: 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 2;
+        }
+
+        .table td {
+            border-color: rgba(255, 255, 255, 0.03);
+            vertical-align: middle;
+            padding: 0.5rem 0.4rem;
+            font-size: 0.7rem;
+        }
+
+        .table tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .btn-sm-icon {
+            background: rgba(255, 255, 255, 0.04);
+            border: none;
+            color: #94a3b8;
+            padding: 0.2rem 0.4rem;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            font-size: 0.7rem;
+        }
+
+        .btn-sm-icon:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: #e2e8f0;
+        }
+
+        .btn-sm-icon.danger:hover {
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+        }
+
+        /* ===== TOAST ===== */
         .toast-container {
             position: fixed;
-            top: 20px;
-            right: 20px;
+            top: 10px;
+            right: 10px;
+            left: 10px;
             z-index: 9999;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
             max-width: 400px;
+            margin: 0 auto;
+            pointer-events: none;
         }
 
         .toast-custom {
-            background: rgba(30, 41, 59, 0.95);
+            background: rgba(15, 23, 42, 0.96);
             backdrop-filter: blur(20px);
             color: #f1f5f9;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 16px;
-            padding: 1rem 1.5rem;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-            animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 14px;
+            padding: 0.7rem 1rem;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+            animation: slideDown 0.35s cubic-bezier(0.16, 1, 0.3, 1);
             display: flex;
             align-items: center;
-            gap: 12px;
-            font-size: 0.9rem;
+            gap: 10px;
+            font-size: 0.8rem;
+            pointer-events: auto;
         }
 
         .toast-custom.success {
-            border-left: 4px solid #10b981;
+            border-left: 3px solid #10b981;
         }
 
         .toast-custom.error {
-            border-left: 4px solid #ef4444;
+            border-left: 3px solid #ef4444;
         }
 
-        @keyframes slideInRight {
+        @keyframes slideDown {
             from {
-                transform: translateX(120%);
+                transform: translateY(-80px);
                 opacity: 0;
             }
             to {
-                transform: translateX(0);
+                transform: translateY(0);
                 opacity: 1;
             }
         }
 
         .toast-custom.removing {
-            animation: slideOutRight 0.3s ease forwards;
+            animation: slideUp 0.3s ease forwards;
         }
 
-        @keyframes slideOutRight {
+        @keyframes slideUp {
             to {
-                transform: translateX(120%);
+                transform: translateY(-80px);
                 opacity: 0;
             }
         }
 
-        /* Loading Spinner */
+        /* ===== LOADING ===== */
         .loading-spinner {
             display: inline-block;
-            width: 1.2rem;
-            height: 1.2rem;
-            border: 3px solid rgba(255, 255, 255, 0.15);
+            width: 1rem;
+            height: 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.15);
             border-radius: 50%;
             border-top-color: #fff;
-            animation: spin 0.8s linear infinite;
+            animation: spin 0.7s linear infinite;
         }
 
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
 
-        /* Footer */
-        .footer-info {
-            color: #475569;
-            font-size: 0.8rem;
-            text-align: center;
-            margin-top: 2.5rem;
-            padding: 1rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.03);
-        }
-
-        .footer-info i {
-            color: #6366f1;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .card-body {
-                padding: 1.25rem;
-            }
-            .card-header {
-                padding: 1rem 1.25rem;
-                font-size: 1.1rem;
-            }
-            .toast-container {
-                top: 10px;
-                right: 10px;
-                max-width: 90%;
-            }
-        }
-
-        /* Scrollbar Global */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.03);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #475569;
-            border-radius: 10px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #6366f1;
-        }
-
-        /* Glow effect on cards */
-        .card.glow-primary {
-            box-shadow: 0 0 40px rgba(99, 102, 241, 0.05), 0 25px 50px -12px rgba(0, 0, 0, 0.8);
-        }
-
-        .card.glow-success {
-            box-shadow: 0 0 40px rgba(16, 185, 129, 0.05), 0 25px 50px -12px rgba(0, 0, 0, 0.8);
-        }
-
-        /* Sensor toggle switch */
+        /* ===== SENSOR TOGGLE ===== */
         .sensor-toggle {
             display: inline-flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             cursor: pointer;
-            padding: 8px 16px;
+            padding: 4px 12px;
             border-radius: 40px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.04);
             transition: all 0.3s ease;
             user-select: none;
-        }
-
-        .sensor-toggle:hover {
-            background: rgba(255, 255, 255, 0.08);
         }
 
         .sensor-toggle input {
@@ -488,12 +541,13 @@
         }
 
         .sensor-toggle .toggle-track {
-            width: 44px;
-            height: 24px;
-            border-radius: 12px;
+            width: 36px;
+            height: 20px;
+            border-radius: 10px;
             background: #334155;
             transition: all 0.3s ease;
             position: relative;
+            flex-shrink: 0;
         }
 
         .sensor-toggle .toggle-track::after {
@@ -501,8 +555,8 @@
             position: absolute;
             top: 2px;
             left: 2px;
-            width: 20px;
-            height: 20px;
+            width: 16px;
+            height: 16px;
             border-radius: 50%;
             background: #94a3b8;
             transition: all 0.3s ease;
@@ -513,18 +567,221 @@
         }
 
         .sensor-toggle input:checked + .toggle-track::after {
-            transform: translateX(20px);
+            transform: translateX(16px);
             background: #fff;
         }
 
         .sensor-toggle .label-text {
-            font-size: 0.85rem;
-            color: #94a3b8;
+            font-size: 0.7rem;
+            color: #64748b;
         }
 
         .sensor-toggle .label-text.active {
             color: #818cf8;
         }
+
+        /* ===== FOOTER ===== */
+        .footer-info {
+            color: #334155;
+            font-size: 0.65rem;
+            text-align: center;
+            margin-top: 1.5rem;
+            padding: 0.8rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.02);
+        }
+
+        .footer-info i {
+            color: #6366f1;
+        }
+
+        .footer-info .heart {
+            color: #ef4444;
+        }
+
+        /* ===== RESPONSIVE FIXES ===== */
+        @media (max-width: 576px) {
+            body {
+                padding: 0.5rem 0.25rem;
+            }
+
+            .card-body {
+                padding: 0.9rem;
+            }
+
+            .card-header {
+                padding: 0.7rem 0.9rem;
+                font-size: 0.85rem;
+                gap: 6px;
+            }
+
+            .app-header .brand h1 {
+                font-size: 1.2rem;
+            }
+
+            .app-header .brand i {
+                font-size: 1.3rem;
+            }
+
+            .app-header .brand .badge-version {
+                font-size: 0.5rem;
+                padding: 0.15rem 0.6rem;
+            }
+
+            .btn {
+                font-size: 0.8rem;
+                padding: 0.45rem 1rem;
+            }
+
+            .btn-lg {
+                font-size: 0.85rem;
+                padding: 0.5rem 1.2rem;
+            }
+
+            .form-control {
+                font-size: 0.8rem;
+                padding: 0.5rem 0.8rem;
+            }
+
+            .image-preview img {
+                max-height: 130px;
+            }
+
+            .result-box {
+                font-size: 0.6rem;
+                max-height: 80px;
+                padding: 0.6rem 0.8rem;
+            }
+
+            .badge-db {
+                font-size: 0.55rem;
+                padding: 0.2rem 0.5rem;
+            }
+
+            .sensor-overlay::before {
+                font-size: 2rem;
+            }
+
+            .sensor-overlay img {
+                max-height: 130px;
+            }
+
+            .table {
+                font-size: 0.65rem;
+                min-width: 300px;
+            }
+
+            .table th, .table td {
+                padding: 0.3rem 0.3rem;
+                font-size: 0.6rem;
+            }
+
+            .btn-sm-icon {
+                font-size: 0.6rem;
+                padding: 0.15rem 0.3rem;
+            }
+
+            .toast-custom {
+                font-size: 0.7rem;
+                padding: 0.5rem 0.8rem;
+            }
+
+            .sensor-toggle {
+                padding: 3px 10px;
+            }
+
+            .sensor-toggle .toggle-track {
+                width: 30px;
+                height: 17px;
+            }
+
+            .sensor-toggle .toggle-track::after {
+                width: 13px;
+                height: 13px;
+            }
+
+            .sensor-toggle input:checked + .toggle-track::after {
+                transform: translateX(13px);
+            }
+
+            .sensor-toggle .label-text {
+                font-size: 0.6rem;
+            }
+
+            .table-wrapper {
+                max-height: 180px;
+            }
+
+            .row.g-3 {
+                --bs-gutter-y: 0.6rem;
+                --bs-gutter-x: 0.6rem;
+            }
+
+            .row.g-4 {
+                --bs-gutter-y: 0.6rem;
+                --bs-gutter-x: 0.6rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .card-header {
+                font-size: 0.75rem;
+                padding: 0.5rem 0.7rem;
+            }
+
+            .card-header .icon-wrapper {
+                width: 28px;
+                height: 28px;
+            }
+
+            .card-header .icon-wrapper i {
+                font-size: 0.7rem;
+            }
+
+            .btn {
+                font-size: 0.7rem;
+                padding: 0.35rem 0.8rem;
+            }
+
+            .app-header .brand {
+                padding: 0.3rem 0.8rem;
+                gap: 8px;
+            }
+
+            .app-header .brand h1 {
+                font-size: 1rem;
+            }
+
+            .form-label {
+                font-size: 0.7rem;
+            }
+        }
+
+        /* ===== UTILITY ===== */
+        .gap-1 { gap: 0.25rem; }
+        .gap-2 { gap: 0.5rem; }
+        .gap-3 { gap: 0.75rem; }
+        .flex-wrap { flex-wrap: wrap; }
+        .flex-shrink-0 { flex-shrink: 0; }
+        .text-truncate-mobile {
+            max-width: 80px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            display: inline-block;
+        }
+        @media (max-width: 576px) {
+            .text-truncate-mobile {
+                max-width: 50px;
+            }
+        }
+
+        .mt-1 { margin-top: 0.25rem; }
+        .mt-2 { margin-top: 0.5rem; }
+        .mt-3 { margin-top: 0.75rem; }
+        .mt-4 { margin-top: 1rem; }
+        .mb-1 { margin-bottom: 0.25rem; }
+        .mb-2 { margin-bottom: 0.5rem; }
+        .mb-3 { margin-bottom: 0.75rem; }
     </style>
 </head>
 <body>
@@ -533,49 +790,47 @@
 
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-lg-10 col-xl-9">
+        <div class="col-12 col-lg-10 col-xl-9">
 
-            <!-- Header -->
-            <div class="text-center mb-5">
-                <div style="display: inline-flex; align-items: center; gap: 16px; background: rgba(255,255,255,0.03); padding: 0.5rem 2rem; border-radius: 60px; border: 1px solid rgba(255,255,255,0.05); backdrop-filter: blur(10px);">
-                    <i class="fas fa-shield-halved text-primary" style="font-size: 2rem;"></i>
-                    <h1 class="display-5 fw-bold text-white" style="text-shadow: 0 4px 30px rgba(0,0,0,0.5); letter-spacing: -0.5px;">
-                        SecureImage
-                    </h1>
-                    <span class="badge" style="background: linear-gradient(135deg, #6366f1, #8b5cf6); padding: 0.3rem 1rem; border-radius: 40px; font-size: 0.7rem; letter-spacing: 0.5px; text-transform: uppercase;">AES-256</span>
+            <!-- ===== HEADER ===== -->
+            <div class="app-header">
+                <div class="brand">
+                    <i class="fas fa-shield-halved"></i>
+                    <h1>SecureImage</h1>
+                    <span class="badge-version">AES-256</span>
                 </div>
-                <p class="text-secondary-custom mt-3" style="letter-spacing: 0.5px; opacity: 0.7;">
-                    <i class="fas fa-lock me-2"></i>Enkripsi & Sensor Gambar · Database Lokal · Bisa Dibalik
+                <p class="subtitle">
+                    <i class="fas fa-lock me-1"></i>Enkripsi & Sensor · Database Lokal · Bisa Dibalik
                 </p>
             </div>
 
-            <!-- ENKRIPSI CARD -->
-            <div class="card glow-primary mb-4">
+            <!-- ===== ENKRIPSI CARD ===== -->
+            <div class="card">
                 <div class="card-header">
                     <div class="icon-wrapper">
                         <i class="fas fa-cloud-upload-alt text-primary"></i>
                     </div>
-                    <span>Unggah & Enkripsi Gambar</span>
-                    <span class="badge-db ms-auto"><i class="far fa-clock me-1"></i> <span id="headerTime"></span></span>
+                    <span class="flex-grow-1">Unggah & Enkripsi</span>
+                    <span class="badge-db"><i class="far fa-clock me-1"></i><span id="headerTime"></span></span>
                 </div>
                 <div class="card-body">
                     <form id="encryptForm">
-                        <div class="row g-4">
-                            <div class="col-md-5">
-                                <label class="form-label"><i class="fas fa-image me-2"></i>Pilih Gambar</label>
+                        <div class="row g-3">
+                            <div class="col-12 col-md-5">
+                                <label class="form-label"><i class="fas fa-image"></i>Pilih Gambar</label>
                                 <input class="form-control" type="file" id="imageInput" accept="image/*" required>
-                                <div class="image-preview mt-3" id="previewContainer">
+                                <div class="image-preview" id="previewContainer">
                                     <i class="fas fa-file-image placeholder-icon"></i>
-                                    <span class="text-secondary-custom small">Belum ada gambar</span>
+                                    <span class="placeholder-text">Belum ada gambar</span>
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <label class="form-label"><i class="fas fa-key me-2"></i>Kunci Enkripsi</label>
+                            <div class="col-12 col-md-4">
+                                <label class="form-label"><i class="fas fa-key"></i>Kunci</label>
                                 <input type="text" class="form-control" id="secretKey" placeholder="Masukkan kunci" value="rahasia123">
-                                <small class="text-secondary-custom d-block mt-2" style="font-size:0.75rem;">
+                                <small class="text-secondary-custom d-block mt-1" style="font-size:0.65rem; color:#475569;">
                                     <i class="fas fa-info-circle me-1"></i>Gunakan kunci yang sama untuk dekripsi
                                 </small>
-                                <div class="mt-3">
+                                <div class="mt-2">
                                     <label class="sensor-toggle">
                                         <span class="label-text"><i class="fas fa-eye-slash me-1"></i>Sensor</span>
                                         <input type="checkbox" id="sensorToggle" checked>
@@ -584,7 +839,7 @@
                                     </label>
                                 </div>
                             </div>
-                            <div class="col-md-3 d-grid gap-2">
+                            <div class="col-12 col-md-3 d-grid gap-2">
                                 <button type="submit" class="btn btn-primary btn-lg" id="encryptBtn">
                                     <i class="fas fa-lock me-2"></i>Enkripsi
                                 </button>
@@ -596,14 +851,14 @@
                     </form>
 
                     <!-- Hasil Enkripsi -->
-                    <div id="encryptResultArea" class="mt-4" style="display: none;">
-                        <hr class="border-secondary opacity-25">
+                    <div id="encryptResultArea" class="mt-3" style="display: none;">
+                        <hr class="border-secondary opacity-25 my-3">
                         <div class="row g-3">
-                            <div class="col-md-7">
-                                <div class="d-flex align-items-center gap-3 mb-2">
-                                    <i class="fas fa-check-circle text-success fa-lg"></i>
-                                    <h6 class="mb-0 fw-semibold">Hasil Enkripsi</h6>
-                                    <span class="badge-db ms-2"><i class="far fa-clock me-1"></i> <span id="timestampEncrypt"></span></span>
+                            <div class="col-12 col-md-7">
+                                <div class="d-flex align-items-center gap-2 mb-1 flex-wrap">
+                                    <i class="fas fa-check-circle text-success"></i>
+                                    <span class="fw-semibold" style="font-size:0.85rem;">Hasil Enkripsi</span>
+                                    <span class="badge-db"><i class="far fa-clock me-1"></i><span id="timestampEncrypt"></span></span>
                                 </div>
                                 <div class="result-box" id="encryptedResult">
                                     [data terenkripsi akan muncul di sini]
@@ -612,19 +867,15 @@
                                     <i class="far fa-copy me-1"></i>Salin
                                 </button>
                             </div>
-                            <div class="col-md-5">
-                                <div class="d-flex align-items-center gap-3 mb-2">
-                                    <i class="fas fa-database text-warning fa-lg"></i>
-                                    <h6 class="mb-0 fw-semibold">Database</h6>
-                                    <span class="badge-db"><i class="fas fa-check-circle text-success me-1"></i> ID: <span id="recordIdDisplay">-</span></span>
+                            <div class="col-12 col-md-5">
+                                <div class="d-flex align-items-center gap-2 mb-1 flex-wrap">
+                                    <i class="fas fa-database text-warning"></i>
+                                    <span class="fw-semibold" style="font-size:0.85rem;">Database</span>
+                                    <span class="badge-db"><i class="fas fa-check-circle text-success me-1"></i>ID: <span id="recordIdDisplay">-</span></span>
                                 </div>
-                                <div class="p-3 rounded-3" style="background: rgba(0,0,0,0.2);">
-                                    <div class="small text-secondary-custom">
-                                        <i class="fas fa-info-circle me-1"></i> Data tersimpan di localStorage
-                                    </div>
-                                    <div class="small text-secondary-custom mt-1">
-                                        <i class="fas fa-file me-1"></i> <span id="fileInfoDisplay">-</span>
-                                    </div>
+                                <div class="p-2 rounded-3" style="background: rgba(0,0,0,0.2); font-size:0.75rem; color:#64748b;">
+                                    <div><i class="fas fa-info-circle me-1"></i>Data tersimpan di localStorage</div>
+                                    <div class="mt-1"><i class="fas fa-file me-1"></i><span id="fileInfoDisplay">-</span></div>
                                 </div>
                             </div>
                         </div>
@@ -632,26 +883,26 @@
                 </div>
             </div>
 
-            <!-- DEKRIPSI CARD -->
-            <div class="card glow-success mb-4">
+            <!-- ===== DEKRIPSI CARD ===== -->
+            <div class="card">
                 <div class="card-header">
                     <div class="icon-wrapper" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.2));">
                         <i class="fas fa-unlock-alt text-success"></i>
                     </div>
-                    <span>Dekripsi & Sensor Gambar</span>
+                    <span class="flex-grow-1">Dekripsi & Sensor</span>
                 </div>
                 <div class="card-body">
                     <form id="decryptForm">
                         <div class="row g-3">
-                            <div class="col-md-7">
-                                <label class="form-label"><i class="fas fa-paste me-2"></i>Tempel Data Enkripsi</label>
-                                <textarea class="form-control" id="decryptInput" rows="2" placeholder="Masukkan ciphertext dari hasil enkripsi..."></textarea>
+                            <div class="col-12 col-md-7">
+                                <label class="form-label"><i class="fas fa-paste"></i>Tempel Data Enkripsi</label>
+                                <textarea class="form-control" id="decryptInput" rows="2" placeholder="Masukkan ciphertext..."></textarea>
                             </div>
-                            <div class="col-md-3">
-                                <label class="form-label"><i class="fas fa-key me-2"></i>Kunci</label>
+                            <div class="col-12 col-md-3">
+                                <label class="form-label"><i class="fas fa-key"></i>Kunci</label>
                                 <input type="text" class="form-control" id="decryptKey" placeholder="Kunci yang sama" value="rahasia123">
                             </div>
-                            <div class="col-md-2 d-grid">
+                            <div class="col-12 col-md-2 d-grid">
                                 <button type="submit" class="btn btn-success btn-lg" id="decryptBtn">
                                     <i class="fas fa-undo me-2"></i>Balikkan
                                 </button>
@@ -660,34 +911,36 @@
                     </form>
 
                     <!-- Hasil Dekripsi -->
-                    <div id="decryptResultArea" class="mt-4" style="display: none;">
-                        <hr class="border-secondary opacity-25">
-                        <div class="row g-4">
-                            <div class="col-md-6">
-                                <h6 class="fw-semibold mb-3">
-                                    <i class="fas fa-image text-info me-2"></i>Gambar Asli
-                                    <span class="badge-db ms-2" id="sensorStatusBadge">
+                    <div id="decryptResultArea" class="mt-3" style="display: none;">
+                        <hr class="border-secondary opacity-25 my-3">
+                        <div class="row g-3">
+                            <div class="col-12 col-md-6">
+                                <div class="d-flex align-items-center gap-2 mb-2 flex-wrap">
+                                    <i class="fas fa-image text-info"></i>
+                                    <span class="fw-semibold" style="font-size:0.85rem;">Gambar Asli</span>
+                                    <span class="badge-status active" id="sensorStatusBadge">
                                         <i class="fas fa-eye-slash me-1"></i>Sensor Aktif
                                     </span>
-                                </h6>
-                                <div class="image-preview has-image" id="decryptedPreviewContainer">
+                                </div>
+                                <div class="image-preview has-image" id="decryptedPreviewContainer" style="min-height:80px;">
                                     <div class="sensor-overlay" id="sensorOverlay">
-                                        <img id="decryptedImage" src="" alt="decrypted" style="max-height:250px; display:none;">
+                                        <img id="decryptedImage" src="" alt="decrypted" style="display:none; max-height:160px;">
                                     </div>
                                     <div id="decryptedPlaceholder">
-                                        <i class="fas fa-spinner fa-pulse text-secondary-custom"></i>
-                                        <span class="text-secondary-custom small d-block mt-2">Menunggu dekripsi...</span>
+                                        <i class="fas fa-spinner fa-pulse" style="color:#475569;"></i>
+                                        <span class="placeholder-text d-block mt-1">Menunggu dekripsi...</span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <h6 class="fw-semibold mb-3">
-                                    <i class="fas fa-info-circle text-info me-2"></i>Metadata
-                                </h6>
-                                <div class="result-box" id="decryptMeta" style="font-size:0.85rem; border-left-color: #10b981; min-height: 100px;">
-                                    <span class="text-secondary-custom">Belum ada data</span>
+                            <div class="col-12 col-md-6">
+                                <div class="d-flex align-items-center gap-2 mb-2">
+                                    <i class="fas fa-info-circle text-info"></i>
+                                    <span class="fw-semibold" style="font-size:0.85rem;">Metadata</span>
                                 </div>
-                                <div class="d-flex gap-2 mt-3">
+                                <div class="result-box" id="decryptMeta" style="border-left-color:#10b981; min-height:70px; font-size:0.7rem;">
+                                    <span style="color:#475569;">Belum ada data</span>
+                                </div>
+                                <div class="d-flex gap-2 mt-2 flex-wrap">
                                     <button class="btn btn-outline-light btn-sm" id="downloadDecryptedBtn">
                                         <i class="fas fa-download me-1"></i>Unduh
                                     </button>
@@ -701,52 +954,54 @@
                 </div>
             </div>
 
-            <!-- DATABASE TABLE -->
+            <!-- ===== DATABASE CARD ===== -->
             <div class="card">
                 <div class="card-header">
                     <div class="icon-wrapper" style="background: linear-gradient(135deg, rgba(234, 179, 8, 0.2), rgba(234, 179, 8, 0.1));">
                         <i class="fas fa-table text-warning"></i>
                     </div>
-                    <span>Riwayat Database</span>
-                    <button class="btn btn-outline-light btn-sm ms-auto" id="refreshDbBtn">
-                        <i class="fas fa-sync-alt me-1"></i>Segarkan
+                    <span class="flex-grow-1">Riwayat Database</span>
+                    <button class="btn btn-outline-light btn-sm" id="refreshDbBtn">
+                        <i class="fas fa-sync-alt"></i>
                     </button>
-                    <button class="btn btn-outline-light btn-sm ms-2" id="clearDbBtn">
-                        <i class="fas fa-trash-alt me-1"></i>Bersihkan
+                    <button class="btn btn-outline-light btn-sm" id="clearDbBtn">
+                        <i class="fas fa-trash-alt"></i>
                     </button>
                 </div>
                 <div class="card-body">
-                    <div style="max-height: 300px; overflow-y: auto;">
-                        <table class="table table-hover" id="dbTable">
+                    <div class="table-wrapper">
+                        <table class="table" id="dbTable">
                             <thead>
                                 <tr>
                                     <th>ID</th>
                                     <th>Nama</th>
                                     <th>Tipe</th>
                                     <th>Ukuran</th>
-                                    <th>Waktu</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody id="dbTableBody">
-                                <tr><td colspan="6" class="text-center text-secondary-custom py-4">Belum ada data</td></tr>
+                                <tr><td colspan="5" class="text-center" style="color:#475569; padding:1.5rem 0;">Belum ada data</td></tr>
                             </tbody>
                         </table>
                     </div>
-                    <div class="d-flex justify-content-between align-items-center mt-3">
-                        <span class="text-secondary-custom small">
+                    <div class="d-flex justify-content-between align-items-center mt-2 flex-wrap gap-1">
+                        <span style="color:#475569; font-size:0.65rem;">
                             <i class="fas fa-database me-1"></i> Total: <span id="totalRecords">0</span> record
                         </span>
-                        <span class="text-secondary-custom small">
-                            <i class="fas fa-shield-alt me-1"></i> Data tersimpan di localStorage
+                        <span style="color:#475569; font-size:0.65rem;">
+                            <i class="fas fa-shield-alt me-1"></i> localStorage
                         </span>
                     </div>
                 </div>
             </div>
 
+            <!-- ===== FOOTER ===== -->
             <div class="footer-info">
-                <i class="fas fa-shield-halved me-2"></i> SecureImage v2.0 · AES-256-CBC · <i class="fas fa-code me-1"></i>Dibuat dengan <i class="fas fa-heart text-danger" style="font-size: 0.7rem;"></i>
+                <i class="fas fa-shield-halved me-1"></i> SecureImage v2.0 · AES-256-CBC · 
+                <i class="fas fa-code me-1"></i>Dibuat dengan <i class="fas fa-heart heart"></i>
             </div>
+
         </div>
     </div>
 </div>
@@ -827,8 +1082,7 @@
             for (let i = 0; i < byteCharacters.length; i++) {
                 byteNumbers[i] = byteCharacters.charCodeAt(i);
             }
-            const byteArray = new Uint8Array(byteNumbers);
-            return byteArray;
+            return new Uint8Array(byteNumbers);
         }
 
         function detectMimeType(bytes) {
@@ -891,7 +1145,7 @@
             if (!file) {
                 previewContainer.innerHTML = `
                     <i class="fas fa-file-image placeholder-icon"></i>
-                    <span class="text-secondary-custom small">Belum ada gambar</span>
+                    <span class="placeholder-text">Belum ada gambar</span>
                 `;
                 previewContainer.classList.remove('has-image');
                 return;
@@ -909,7 +1163,7 @@
             imageInput.value = '';
             previewContainer.innerHTML = `
                 <i class="fas fa-file-image placeholder-icon"></i>
-                <span class="text-secondary-custom small">Belum ada gambar</span>
+                <span class="placeholder-text">Belum ada gambar</span>
             `;
             previewContainer.classList.remove('has-image');
             encryptResultArea.style.display = 'none';
@@ -921,7 +1175,7 @@
             decryptedImage.style.display = 'none';
             decryptedPlaceholder.style.display = 'block';
             decryptedPreviewContainer.classList.remove('has-image');
-            decryptMeta.innerHTML = `<span class="text-secondary-custom">Belum ada data</span>`;
+            decryptMeta.innerHTML = `<span style="color:#475569;">Belum ada data</span>`;
             if (currentDecryptedUrl) {
                 URL.revokeObjectURL(currentDecryptedUrl);
                 currentDecryptedUrl = null;
@@ -1004,24 +1258,21 @@
                 const url = URL.createObjectURL(blob);
                 currentDecryptedUrl = url;
 
-                // Tampilkan gambar dengan sensor
                 decryptedImage.src = url;
                 decryptedImage.style.display = 'block';
                 decryptedPlaceholder.style.display = 'none';
                 decryptedPreviewContainer.classList.add('has-image');
 
-                // Update sensor
                 isSensorActive = sensorToggle.checked;
                 updateSensor();
 
-                // Metadata
                 const ext = mimeType.split('/')[1] || 'png';
                 decryptMeta.innerHTML = `
                     <div class="d-flex align-items-center gap-2 mb-1">
                         <i class="fas fa-check-circle text-success"></i>
                         <span class="fw-semibold">Berhasil didekripsi</span>
                     </div>
-                    <div class="text-secondary-custom small">
+                    <div style="color:#64748b;">
                         <div><i class="fas fa-file me-1"></i> Ukuran: ${(blob.size/1024).toFixed(1)} KB</div>
                         <div><i class="fas fa-tag me-1"></i> Tipe: ${mimeType}</div>
                         <div><i class="fas fa-key me-1"></i> Kunci: ${key.slice(0,4)}...${key.slice(-4)}</div>
@@ -1030,7 +1281,6 @@
                 `;
                 decryptResultArea.style.display = 'block';
 
-                // Download
                 downloadDecryptedBtn.onclick = function() {
                     const a = document.createElement('a');
                     a.href = url;
@@ -1051,50 +1301,21 @@
             }
         });
 
-        // ===== SENSOR TOGGLE =====
+        // ===== SENSOR =====
         function updateSensor() {
             if (!decryptedImage.src || decryptedImage.style.display === 'none') return;
             
             if (isSensorActive) {
-                sensorOverlay.style.display = 'inline-block';
-                sensorOverlay.classList.add('sensor-overlay');
+                sensorOverlay.className = 'sensor-overlay';
+                sensorStatusBadge.className = 'badge-status active';
                 sensorStatusBadge.innerHTML = '<i class="fas fa-eye-slash me-1"></i>Sensor Aktif';
-                sensorStatusBadge.style.borderColor = '#ef4444';
             } else {
-                sensorOverlay.style.display = 'inline-block';
-                sensorOverlay.classList.remove('sensor-overlay');
+                sensorOverlay.className = 'sensor-overlay no-sensor';
+                sensorStatusBadge.className = 'badge-status inactive';
                 sensorStatusBadge.innerHTML = '<i class="fas fa-eye me-1"></i>Sensor Nonaktif';
-                sensorStatusBadge.style.borderColor = '#10b981';
-                // Hapus pseudo-element dengan mengatur ulang style
-                sensorOverlay.style.setProperty('--sensor-overlay', 'none');
             }
         }
 
-        // Override CSS untuk sensor via JS
-        const styleSensor = document.createElement('style');
-        styleSensor.textContent = `
-            .sensor-overlay::before {
-                content: '🔒';
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                font-size: 3rem;
-                z-index: 2;
-                text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
-                animation: pulse 2s ease-in-out infinite;
-            }
-            .sensor-overlay img {
-                filter: blur(12px) brightness(0.7);
-                transition: all 0.5s ease;
-            }
-            .sensor-overlay:hover img {
-                filter: blur(8px) brightness(0.8);
-            }
-        `;
-        document.head.appendChild(styleSensor);
-
-        // Toggle sensor dari checkbox
         sensorToggle.addEventListener('change', function() {
             isSensorActive = this.checked;
             updateSensor();
@@ -1103,7 +1324,6 @@
             }
         });
 
-        // Toggle sensor dari button
         toggleSensorBtn.addEventListener('click', function() {
             sensorToggle.checked = !sensorToggle.checked;
             sensorToggle.dispatchEvent(new Event('change'));
@@ -1113,7 +1333,7 @@
         function renderTable() {
             loadDB();
             if (dbRecords.length === 0) {
-                dbTableBody.innerHTML = `<tr><td colspan="6" class="text-center text-secondary-custom py-4">Belum ada data</td></tr>`;
+                dbTableBody.innerHTML = `<tr><td colspan="5" class="text-center" style="color:#475569; padding:1.5rem 0;">Belum ada data</td></tr>`;
                 totalRecords.textContent = '0';
                 return;
             }
@@ -1124,14 +1344,14 @@
                 const fileName = rec.fileName || 'gambar';
                 const fileType = rec.fileType || 'image/png';
                 const size = (rec.fileSize/1024).toFixed(1);
+                const shortId = rec.id.slice(0,6);
                 html += `<tr>
-                    <td><span class="badge bg-secondary">${rec.id.slice(0,8)}</span></td>
-                    <td>${fileName}</td>
-                    <td><span class="badge" style="background: rgba(99,102,241,0.2); color: #a5b4fc;">${fileType}</span></td>
+                    <td><span class="badge" style="background:rgba(99,102,241,0.2); color:#a5b4fc; font-size:0.6rem; padding:0.15rem 0.4rem;">${shortId}</span></td>
+                    <td class="text-truncate-mobile" title="${fileName}">${fileName}</td>
+                    <td><span style="font-size:0.6rem; color:#64748b;">${fileType.split('/')[1] || fileType}</span></td>
                     <td>${size} KB</td>
-                    <td>${rec.timestamp || '-'}</td>
                     <td>
-                        <button class="btn-sm-icon" onclick="window.copyCipher('${escapedCipher}')" title="Salin cipher"><i class="fas fa-copy"></i></button>
+                        <button class="btn-sm-icon" onclick="window.copyCipher('${escapedCipher}')" title="Salin"><i class="fas fa-copy"></i></button>
                         <button class="btn-sm-icon" onclick="window.loadToDecrypt('${escapedCipher}')" title="Dekripsi"><i class="fas fa-undo-alt"></i></button>
                         <button class="btn-sm-icon danger" onclick="window.deleteRecord('${rec.id}')" title="Hapus"><i class="fas fa-trash-alt"></i></button>
                     </td>
@@ -1162,12 +1382,12 @@
             decryptedImage.style.display = 'none';
             decryptedPlaceholder.style.display = 'block';
             decryptedPreviewContainer.classList.remove('has-image');
-            decryptMeta.innerHTML = `<span class="text-secondary-custom">Tempel data, masukkan kunci, lalu klik Balikkan</span>`;
+            decryptMeta.innerHTML = `<span style="color:#475569;">Tempel data, masukkan kunci, lalu klik Balikkan</span>`;
             if (currentDecryptedUrl) {
                 URL.revokeObjectURL(currentDecryptedUrl);
                 currentDecryptedUrl = null;
             }
-            document.querySelector('.card.glow-success').scrollIntoView({ behavior: 'smooth' });
+            document.querySelector('.card:nth-of-type(2)').scrollIntoView({ behavior: 'smooth' });
             showToast('📋 Data dimuat ke form dekripsi', 'success');
         };
 
@@ -1218,11 +1438,9 @@
         // ===== INIT =====
         renderTable();
         console.log('✅ SecureImage siap digunakan!');
-        console.log('📌 Fitur: Enkripsi + Sensor (Blur) + Database');
 
-        // Cek CryptoJS
         if (typeof CryptoJS === 'undefined') {
-            showToast('⚠️ CryptoJS tidak ditemukan! Periksa koneksi internet.', 'error');
+            showToast('⚠️ CryptoJS tidak ditemukan! Periksa koneksi.', 'error');
         } else {
             console.log('✅ CryptoJS loaded');
         }
