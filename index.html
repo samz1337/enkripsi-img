@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔒 Enkripsi Gambar + Database</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <style>
+        body {
+            background: linear-gradient(145deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
+        .card {
+            background: rgba(255,255,255,0.07);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 32px;
+            box-shadow: 0 20px 40px -12px rgba(0,0,0,0.7);
+            color: #f1f5f9;
+        }
+        .card-header {
+            background: transparent;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            font-weight: 600;
+            padding: 1.25rem 1.75rem;
+            font-size: 1.4rem;
+        }
+        .card-body {
+            padding: 1.75rem;
+        }
+        .form-control {
+            background: rgba(0,0,0,0.35);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: #f8fafc;
+            border-radius: 16px;
+            padding: 0.7rem 1.2rem;
+        }
+        .form-control:focus {
+            background: rgba(0,0,0,0.5);
+            border-color: #818cf8;
+            box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.25);
+            color: #fff;
+        }
+        .btn-primary {
+            background: #6366f1;
+            border: none;
+            border-radius: 40px;
+            padding: 0.6rem 1.8rem;
+            font-weight: 600;
+            box-shadow: 0 8px 18px -6px #312e81;
+        }
+        .btn-primary:hover {
+            background: #818cf8;
+            transform: scale(1.02);
+        }
+        .btn-success {
+            border-radius: 40px;
+            padding: 0.6rem 1.8rem;
+            font-weight: 600;
+        }
+        .btn-outline-light {
+            border-radius: 40px;
+            padding: 0.6rem 1.8rem;
+            border-color: rgba(255,255,255,0.25);
+        }
+        .btn-outline-light:hover {
+            background: rgba(255,255,255,0.08);
+        }
+        .image-preview {
+            background: rgba(0,0,0,0.35);
+            border-radius: 24px;
+            padding: 1rem;
+            text-align: center;
+            border: 1px dashed rgba(255,255,255,0.2);
+            min-height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        .image-preview img {
+            max-width: 100%;
+            max-height: 220px;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+        }
+        .result-box {
+            background: rgba(0,0,0,0.3);
+            border-radius: 20px;
+            padding: 1.2rem 1.5rem;
+            word-break: break-all;
+            font-size: 0.8rem;
+            border-left: 4px solid #818cf8;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        .badge-db {
+            background: #2d3748;
+            color: #cbd5e1;
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            font-weight: 400;
+        }
+        .table {
+            color: #e2e8f0;
+            font-size: 0.9rem;
+        }
+        .table th {
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            font-weight: 500;
+        }
+        .table td {
+            border-color: rgba(255,255,255,0.05);
+            vertical-align: middle;
+        }
+        .table tr:hover {
+            background: rgba(255,255,255,0.03);
+        }
+        .btn-sm-icon {
+            background: transparent;
+            border: none;
+            color: #a5b4fc;
+            padding: 0.2rem 0.6rem;
+        }
+        .btn-sm-icon:hover {
+            color: #e0e7ff;
+        }
+        .footer-info {
+            color: #94a3b8;
+            font-size: 0.8rem;
+            text-align: center;
+            margin-top: 2rem;
+        }
+        .text-secondary-custom {
+            color: #94a3b8;
+        }
+        .loading-spinner {
+            display: inline-block;
+            width: 1.2rem;
+            height: 1.2rem;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+        .toast-custom {
+            background: #1e293b;
+            color: #f1f5f9;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 1rem 1.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-10 col-xl-9">
+
+            <div class="text-center mb-4">
+                <h1 class="display-5 fw-bold text-white" style="text-shadow: 0 4px 20px rgba(0,0,0,0.5);">
+                    <i class="fas fa-lock text-primary me-2"></i> Enkripsi Gambar
+                </h1>
+                <p class="text-secondary-custom" style="letter-spacing: 0.5px;">AES-256 · Simpan di database · Bisa dibalik</p>
+            </div>
+
+            <!-- CARD ENKRIPSI -->
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-cloud-upload-alt me-2 text-primary"></i> Unggah & Enkripsi
+                </div>
+                <div class="card-body">
+                    <form id="encryptForm">
+                        <div class="row g-3 align-items-end">
+                            <div class="col-md-5">
+                                <label class="form-label fw-semibold"><i class="fas fa-image me-1"></i> Pilih Gambar</label>
+                                <input class="form-control" type="file" id="imageInput" accept="image/*" required>
+                                <div class="image-preview mt-2" id="previewContainer">
+                                    <i class="fas fa-file-image fa-3x text-secondary-custom" style="opacity:0.4;"></i>
+                                    <span class="text-secondary-custom small mt-1">Belum ada gambar</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold"><i class="fas fa-key me-1"></i> Kunci</label>
+                                <input type="text" class="form-control" id="secretKey" placeholder="Kosong = auto generate" value="rahasia123">
+                                <small class="text-secondary-custom" style="font-size:0.75rem;">Gunakan kunci yang sama untuk dekripsi</small>
+                            </div>
+                            <div class="col-md-3 d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg" id="encryptBtn">
+                                    <i class="fas fa-lock me-2"></i> Enkripsi
+                                </button>
+                                <button type="button" class="btn btn-outline-light mt-2" id="clearFormBtn">
+                                    <i class="fas fa-undo-alt me-1"></i> Reset
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div id="encryptResultArea" class="mt-4" style="display: none;">
+                        <hr class="border-secondary opacity-25">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="d-flex align-items-center gap-2">
+                                    <i class="fas fa-check-circle text-success"></i>
+                                    <h6 class="mb-0 fw-semibold">Hasil Enkripsi</h6>
+                                    <span class="badge-db ms-2"><i class="far fa-clock me-1"></i> <span id="timestampEncrypt"></span></span>
+                                </div>
+                                <div class="result-box mt-2" id="encryptedResult">
+                                    [data terenkripsi akan muncul di sini]
+                                </div>
+                                <button class="btn btn-outline-light btn-sm mt-2" id="copyEncryptedBtn"><i class="far fa-copy me-1"></i> Salin</button>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex align-items-center gap-2">
+                                    <i class="fas fa-database text-warning"></i>
+                                    <h6 class="mb-0 fw-semibold">Tersimpan di Database</h6>
+                                    <span class="badge-db"><i class="fas fa-check-circle text-success me-1"></i> ID: <span id="recordIdDisplay">-</span></span>
+                                </div>
+                                <div class="mt-2 small text-secondary-custom">
+                                    <i class="fas fa-info-circle me-1"></i> Data tersimpan di localStorage
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CARD DEKRIPSI -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <i class="fas fa-unlock-alt me-2 text-success"></i> Dekripsi Kembali
+                </div>
+                <div class="card-body">
+                    <form id="decryptForm">
+                        <div class="row g-3 align-items-end">
+                            <div class="col-md-7">
+                                <label class="form-label fw-semibold"><i class="fas fa-paste me-1"></i> Tempel Data Enkripsi</label>
+                                <textarea class="form-control" id="decryptInput" rows="2" placeholder="Masukkan ciphertext dari hasil enkripsi..."></textarea>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label fw-semibold"><i class="fas fa-key me-1"></i> Kunci</label>
+                                <input type="text" class="form-control" id="decryptKey" placeholder="Kunci yang sama" value="rahasia123">
+                            </div>
+                            <div class="col-md-2 d-grid">
+                                <button type="submit" class="btn btn-success btn-lg" id="decryptBtn">
+                                    <i class="fas fa-undo me-2"></i> Balikkan
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div id="decryptResultArea" class="mt-4" style="display: none;">
+                        <hr class="border-secondary opacity-25">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6 class="fw-semibold"><i class="fas fa-image text-info me-2"></i> Gambar Asli</h6>
+                                <div class="image-preview" id="decryptedPreviewContainer">
+                                    <i class="fas fa-spinner fa-pulse text-secondary-custom"></i> menunggu...
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="fw-semibold"><i class="fas fa-info-circle text-info me-2"></i> Metadata</h6>
+                                <div class="result-box" id="decryptMeta" style="font-size:0.85rem;">
+                                    <span class="text-secondary-custom">belum ada data</span>
+                                </div>
+                                <button class="btn btn-outline-light btn-sm mt-2" id="downloadDecryptedBtn"><i class="fas fa-download me-1"></i> Unduh Gambar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TABEL DATABASE -->
+            <div class="card mt-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span><i class="fas fa-table me-2 text-primary"></i> Riwayat Database</span>
+                    <button class="btn btn-sm btn-outline-light" id="refreshDbBtn"><i class="fas fa-sync-alt me-1"></i> Segarkan</button>
+                </div>
+                <div class="card-body">
+                    <div style="max-height: 260px; overflow-y: auto;">
+                        <table class="table table-hover" id="dbTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nama</th>
+                                    <th>Tipe</th>
+                                    <th>Ukuran</th>
+                                    <th>Waktu</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dbTableBody">
+                                <tr><td colspan="6" class="text-center text-secondary-custom">Belum ada data</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-info">
+                <i class="fas fa-shield-alt me-1"></i> Data disimpan di localStorage · AES-256-CBC (CryptoJS)
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function() {
+        "use strict";
+
+        // ===== DATABASE =====
+        const DB_KEY = 'image_cipher_db_v2';
+        let dbRecords = [];
+
+        function loadDB() {
+            try {
+                const raw = localStorage.getItem(DB_KEY);
+                dbRecords = raw ? JSON.parse(raw) : [];
+            } catch(e) { dbRecords = []; }
+        }
+        function saveDB() {
+            localStorage.setItem(DB_KEY, JSON.stringify(dbRecords));
+        }
+        loadDB();
+
+        function generateId() {
+            return Date.now().toString(36) + '-' + Math.random().toString(36).slice(2,8);
+        }
+
+        function nowTimestamp() {
+            return new Date().toLocaleString('id-ID', { hour12: false });
+        }
+
+        // ===== TOAST NOTIFICATION =====
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = 'toast-custom';
+            const icon = type === 'success' ? 'fa-check-circle text-success' : 'fa-exclamation-circle text-danger';
+            toast.innerHTML = `<i class="fas ${icon} me-2"></i> ${message}`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.3s';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // ===== CRYPTOJS ENKRIPSI/DECKRIPSI =====
+        function encryptData(plaintext, key) {
+            const encrypted = CryptoJS.AES.encrypt(plaintext, key);
+            return encrypted.toString();
+        }
+
+        function decryptData(ciphertext, key) {
+            try {
+                const decrypted = CryptoJS.AES.decrypt(ciphertext, key);
+                return decrypted.toString(CryptoJS.enc.Utf8);
+            } catch(e) {
+                return null;
+            }
+        }
+
+        // ===== FILE TO BASE64 =====
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    // Ambil data base64 tanpa prefix
+                    const base64 = reader.result.split(',')[1];
+                    resolve(base64);
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function base64ToFile(base64, filename, mimeType) {
+            const byteCharacters = atob(base64);
+            const byteNumbers = new Array(byteCharacters.length);
+            for (let i = 0; i < byteCharacters.length; i++) {
+                byteNumbers[i] = byteCharacters.charCodeAt(i);
+            }
+            const byteArray = new Uint8Array(byteNumbers);
+            return new File([byteArray], filename, { type: mimeType });
+        }
+
+        // ===== UI ELEMENTS =====
+        const imageInput = document.getElementById('imageInput');
+        const previewContainer = document.getElementById('previewContainer');
+        const secretKey = document.getElementById('secretKey');
+        const encryptForm = document.getElementById('encryptForm');
+        const encryptBtn = document.getElementById('encryptBtn');
+        const encryptResultArea = document.getElementById('encryptResultArea');
+        const encryptedResult = document.getElementById('encryptedResult');
+        const recordIdDisplay = document.getElementById('recordIdDisplay');
+        const timestampEncrypt = document.getElementById('timestampEncrypt');
+
+        const decryptForm = document.getElementById('decryptForm');
+        const decryptInput = document.getElementById('decryptInput');
+        const decryptKey = document.getElementById('decryptKey');
+        const decryptResultArea = document.getElementById('decryptResultArea');
+        const decryptedPreviewContainer = document.getElementById('decryptedPreviewContainer');
+        const decryptMeta = document.getElementById('decryptMeta');
+        const downloadDecryptedBtn = document.getElementById('downloadDecryptedBtn');
+
+        const dbTableBody = document.getElementById('dbTableBody');
+        const refreshDbBtn = document.getElementById('refreshDbBtn');
+        const clearFormBtn = document.getElementById('clearFormBtn');
+        const copyEncryptedBtn = document.getElementById('copyEncryptedBtn');
+
+        // ===== PREVIEW GAMBAR =====
+        imageInput.addEventListener('change', function(e) {
+            const file = this.files[0];
+            if (!file) {
+                previewContainer.innerHTML = `<i class="fas fa-file-image fa-3x text-secondary-custom" style="opacity:0.4;"></i>
+                                              <span class="text-secondary-custom small mt-1">Belum ada gambar</span>`;
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                previewContainer.innerHTML = `<img src="${ev.target.result}" alt="preview" class="img-fluid" style="max-height:200px;">`;
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // ===== RESET =====
+        clearFormBtn.addEventListener('click', function() {
+            imageInput.value = '';
+            previewContainer.innerHTML = `<i class="fas fa-file-image fa-3x text-secondary-custom" style="opacity:0.4;"></i>
+                                          <span class="text-secondary-custom small mt-1">Belum ada gambar</span>`;
+            encryptResultArea.style.display = 'none';
+            encryptedResult.textContent = '';
+            recordIdDisplay.textContent = '-';
+            decryptInput.value = '';
+            decryptResultArea.style.display = 'none';
+            decryptedPreviewContainer.innerHTML = `<i class="fas fa-file-image fa-3x text-secondary-custom" style="opacity:0.4;"></i>
+                                                   <span class="text-secondary-custom small mt-1">Belum ada gambar</span>`;
+            decryptMeta.innerHTML = `<span class="text-secondary-custom">belum ada data</span>`;
+            showToast('Form direset', 'success');
+        });
+
+        // ===== ENKRIPSI =====
+        encryptForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const file = imageInput.files[0];
+            if (!file) {
+                showToast('⚠️ Pilih gambar terlebih dahulu!', 'error');
+                return;
+            }
+            const key = secretKey.value.trim() || 'default-key-' + Date.now();
+            encryptBtn.disabled = true;
+            encryptBtn.innerHTML = `<span class="loading-spinner me-2"></span> Memproses...`;
+
+            try {
+                // 1. Konversi file ke base64
+                const base64Image = await fileToBase64(file);
+                
+                // 2. Enkripsi base64 dengan CryptoJS
+                const encrypted = encryptData(base64Image, key);
+                
+                // 3. Simpan ke DB
+                const record = {
+                    id: generateId(),
+                    fileName: file.name,
+                    fileType: file.type || 'image/png',
+                    fileSize: file.size,
+                    timestamp: nowTimestamp(),
+                    cipher: encrypted,
+                    keyHint: key.slice(0,4) + '...' + key.slice(-4),
+                };
+                dbRecords.push(record);
+                saveDB();
+
+                // 4. Tampilkan hasil
+                encryptedResult.textContent = encrypted;
+                recordIdDisplay.textContent = record.id;
+                timestampEncrypt.textContent = record.timestamp;
+                encryptResultArea.style.display = 'block';
+
+                // 5. Isi otomatis ke form dekripsi
+                decryptInput.value = encrypted;
+                decryptKey.value = key;
+
+                renderTable();
+                showToast('✅ Enkripsi berhasil! Data tersimpan di database.', 'success');
+
+            } catch(err) {
+                showToast('❌ Gagal enkripsi: ' + err.message, 'error');
+                console.error(err);
+            } finally {
+                encryptBtn.disabled = false;
+                encryptBtn.innerHTML = `<i class="fas fa-lock me-2"></i> Enkripsi`;
+            }
+        });
+
+        // ===== DEKRIPSI =====
+        decryptForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const cipher = decryptInput.value.trim();
+            const key = decryptKey.value.trim() || 'default-key-' + Date.now();
+            if (!cipher) {
+                showToast('⚠️ Masukkan data enkripsi!', 'error');
+                return;
+            }
+            decryptResultArea.style.display = 'none';
+            const btn = document.getElementById('decryptBtn');
+            btn.disabled = true;
+            btn.innerHTML = `<span class="loading-spinner me-2"></span> Mendekripsi...`;
+
+            try {
+                // 1. Dekripsi dengan CryptoJS
+                const decryptedBase64 = decryptData(cipher, key);
+                if (!decryptedBase64) {
+                    throw new Error('Dekripsi gagal. Periksa kunci atau data.');
+                }
+
+                // 2. Konversi base64 ke blob
+                const byteCharacters = atob(decryptedBase64);
+                const byteNumbers = new Array(byteCharacters.length);
+                for (let i = 0; i < byteCharacters.length; i++) {
+                    byteNumbers[i] = byteCharacters.charCodeAt(i);
+                }
+                const byteArray = new Uint8Array(byteNumbers);
+                
+                // 3. Deteksi tipe gambar
+                let mimeType = 'image/png';
+                if (byteArray.length > 4) {
+                    if (byteArray[0] === 0xFF && byteArray[1] === 0xD8) mimeType = 'image/jpeg';
+                    else if (byteArray[0] === 0x89 && byteArray[1] === 0x50 && byteArray[2] === 0x4E && byteArray[3] === 0x47) mimeType = 'image/png';
+                    else if (byteArray[0] === 0x47 && byteArray[1] === 0x49 && byteArray[2] === 0x46) mimeType = 'image/gif';
+                    else if (byteArray[0] === 0x42 && byteArray[1] === 0x4D) mimeType = 'image/bmp';
+                    else if (byteArray[0] === 0x52 && byteArray[1] === 0x49 && byteArray[2] === 0x46 && byteArray[3] === 0x46) mimeType = 'image/webp';
+                }
+
+                const blob = new Blob([byteArray], { type: mimeType });
+                const url = URL.createObjectURL(blob);
+
+                // 4. Tampilkan hasil
+                decryptedPreviewContainer.innerHTML = `<img src="${url}" alt="decrypted" class="img-fluid" style="max-height:200px;">`;
+                decryptMeta.innerHTML = `
+                    <i class="fas fa-check-circle text-success me-1"></i> Berhasil didekripsi<br>
+                    <span class="text-secondary-custom">Ukuran: ${(blob.size/1024).toFixed(1)} KB</span><br>
+                    <span class="text-secondary-custom">Tipe: ${mimeType}</span><br>
+                    <span class="text-secondary-custom">Kunci: ${key.slice(0,4)}...${key.slice(-4)}</span>
+                `;
+                decryptResultArea.style.display = 'block';
+
+                downloadDecryptedBtn.onclick = function() {
+                    const a = document.createElement('a');
+                    a.href = url;
+                    const ext = mimeType.split('/')[1] || 'png';
+                    a.download = `gambar_terdekripsi.${ext}`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                };
+
+                showToast('✅ Dekripsi berhasil! Gambar muncul di atas.', 'success');
+
+            } catch(err) {
+                showToast('❌ Dekripsi gagal: ' + err.message, 'error');
+                console.error(err);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fas fa-undo me-2"></i> Balikkan`;
+            }
+        });
+
+        // ===== RENDER TABEL =====
+        function renderTable() {
+            loadDB();
+            if (dbRecords.length === 0) {
+                dbTableBody.innerHTML = `<tr><td colspan="6" class="text-center text-secondary-custom">Belum ada data</td></tr>`;
+                return;
+            }
+            let html = '';
+            const sorted = [...dbRecords].reverse();
+            sorted.forEach(rec => {
+                // Escape cipher untuk keamanan di atribut
+                const escapedCipher = rec.cipher.replace(/"/g, '&quot;');
+                html += `<tr>
+                    <td><span class="badge bg-secondary">${rec.id.slice(0,8)}</span></td>
+                    <td>${rec.fileName || 'gambar'}</td>
+                    <td>${rec.fileType || 'image/png'}</td>
+                    <td>${(rec.fileSize/1024).toFixed(1)} KB</td>
+                    <td>${rec.timestamp || '-'}</td>
+                    <td>
+                        <button class="btn-sm-icon" onclick="window.copyCipher('${escapedCipher}')" title="Salin cipher"><i class="fas fa-copy"></i></button>
+                        <button class="btn-sm-icon" onclick="window.loadToDecrypt('${escapedCipher}')" title="Dekripsi"><i class="fas fa-undo-alt"></i></button>
+                        <button class="btn-sm-icon text-danger" onclick="window.deleteRecord('${rec.id}')" title="Hapus"><i class="fas fa-trash-alt"></i></button>
+                    </td>
+                </tr>`;
+            });
+            dbTableBody.innerHTML = html;
+        }
+
+        // ===== GLOBAL FUNCTIONS =====
+        window.copyCipher = function(cipher) {
+            navigator.clipboard.writeText(cipher).then(() => {
+                showToast('✅ Ciphertext disalin!', 'success');
+            }).catch(() => {
+                const ta = document.createElement('textarea');
+                ta.value = cipher;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                showToast('✅ Ciphertext disalin!', 'success');
+            });
+        };
+
+        window.loadToDecrypt = function(cipher) {
+            decryptInput.value = cipher;
+            decryptResultArea.style.display = 'none';
+            decryptedPreviewContainer.innerHTML = `<i class="fas fa-file-image fa-3x text-secondary-custom" style="opacity:0.4;"></i>
+                                                   <span class="text-secondary-custom small mt-1">Siap didekripsi</span>`;
+            decryptMeta.innerHTML = `<span class="text-secondary-custom">Tempel data, masukkan kunci, lalu klik Balikkan</span>`;
+            document.querySelector('.card.mt-4:nth-of-type(2)').scrollIntoView({ behavior: 'smooth' });
+            showToast('📋 Data dimuat ke form dekripsi', 'success');
+        };
+
+        window.deleteRecord = function(id) {
+            if (!confirm('Hapus record ini dari database?')) return;
+            loadDB();
+            dbRecords = dbRecords.filter(r => r.id !== id);
+            saveDB();
+            renderTable();
+            showToast('🗑️ Record dihapus', 'success');
+        };
+
+        // ===== EVENT LISTENER =====
+        refreshDbBtn.addEventListener('click', renderTable);
+
+        copyEncryptedBtn.addEventListener('click', function() {
+            const text = encryptedResult.textContent;
+            if (!text || text === '[data terenkripsi akan muncul di sini]') {
+                showToast('Tidak ada data untuk disalin.', 'error');
+                return;
+            }
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('✅ Data enkripsi disalin!', 'success');
+            }).catch(() => {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                showToast('✅ Data enkripsi disalin!', 'success');
+            });
+        });
+
+        // ===== INISIALISASI =====
+        renderTable();
+        console.log('✅ Aplikasi siap digunakan!');
+        console.log('📌 Pilih gambar, klik Enkripsi, lalu Balikkan untuk dekripsi.');
+
+        // Test CryptoJS tersedia
+        if (typeof CryptoJS === 'undefined') {
+            showToast('⚠️ CryptoJS tidak ditemukan! Pastikan koneksi internet.', 'error');
+        } else {
+            console.log('✅ CryptoJS loaded');
+        }
+
+    })();
+</script>
+</body>
+</html>
